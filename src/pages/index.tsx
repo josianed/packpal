@@ -1,11 +1,9 @@
+import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
+import { Inter } from "next/font/google";
 import Head from "next/head";
 import Link from "next/link";
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-
 import { api } from "~/utils/api";
-
-import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 

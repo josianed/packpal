@@ -7,6 +7,20 @@
  * need to use are documented accordingly near the end.
  */
 
+
+import {
+  type SignedInAuthObject,
+  type SignedOutAuthObject,
+} from "@clerk/nextjs/dist/api";
+import { getAuth } from "@clerk/nextjs/server";
+
+import { TRPCError, initTRPC } from "@trpc/server";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import superjson from "superjson";
+import { ZodError } from "zod";
+import { prisma } from "~/server/db";
+
+
 /**
  * 1. CONTEXT
  *
@@ -14,9 +28,6 @@
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-
-import { prisma } from "~/server/db";
 
 type CreateContextOptions = {
   auth: SignedInAuthObject | SignedOutAuthObject;
@@ -56,15 +67,6 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { TRPCError, initTRPC } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
-import {
-  type SignedInAuthObject,
-  type SignedOutAuthObject,
-} from "@clerk/nextjs/dist/api";
-import { getAuth } from "@clerk/nextjs/server";
-
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
