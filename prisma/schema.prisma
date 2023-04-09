@@ -11,8 +11,36 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Category {
+    id    String @id @default(cuid())
+    name  String @db.VarChar(255)
+    items Item[]
+}
+
+model Tag {
+    id    String @id @default(cuid())
+    name  String @db.VarChar(255)
+    color String @db.VarChar(255)
+    item  Item[]
+}
+
+model Item {
+    id          String   @id @default(cuid())
+    addedAt     DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String   @db.VarChar(255)
+    description String   @db.VarChar(510)
+    make        String   @db.VarChar(255)
+    model       String   @db.VarChar(255)
+    category    Category @relation(fields: [categoryId], references: [id])
+    categoryId  String
+    weight_g    Float    @db.Double
+    weight_oz   Float    @db.Double
+    tags        Tag      @relation(fields: [tagId], references: [id])
+    tagId       String
+    link        String   @db.VarChar(255)
+    wishlist    Boolean
+
+    @@index([categoryId])
+    @@index([tagId])
 }
