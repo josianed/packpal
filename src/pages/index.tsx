@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { SignIn, SignInButton, useUser } from "@clerk/nextjs";
+import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 
 import { api } from "~/utils/api";
 
@@ -22,7 +22,11 @@ const Home: NextPage = () => {
           <p>User?.username: {JSON.stringify(user?.emailAddresses)}</p>
           <p>isLoaded: {String(isLoaded)}</p>
           <p>isSignedIn: {String(isSignedIn)}</p>
-          <SignInButton />
+          {user !== null && user !== undefined ? (
+            <SignOutButton />
+          ) : (
+            <SignInButton />
+          )}
         </div>
       </main>
     </>
