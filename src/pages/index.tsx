@@ -10,6 +10,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 const Home: NextPage = () => {
+  // TODO: How do you invalidate a query like this once you've signed in?
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   const { user, isLoaded, isSignedIn } = useUser();
@@ -35,6 +36,7 @@ const Home: NextPage = () => {
           <p>User?.username: {JSON.stringify(user?.fullName)}</p>
           <p>isLoaded: {String(isLoaded)}</p>
           <p>isSignedIn: {String(isSignedIn)}</p>
+          <p>{hello.data?.greeting}</p>
           {user !== null && user !== undefined ? (
             <SignOutButton>
               <button
