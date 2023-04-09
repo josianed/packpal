@@ -7,19 +7,16 @@
  * need to use are documented accordingly near the end.
  */
 
-
 import {
   type SignedInAuthObject,
   type SignedOutAuthObject,
-} from "@clerk/nextjs/dist/api";
-import { getAuth } from "@clerk/nextjs/server";
-
-import { TRPCError, initTRPC } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import superjson from "superjson";
-import { ZodError } from "zod";
-import { prisma } from "~/server/db";
-
+} from "@clerk/nextjs/dist/api"
+import { getAuth } from "@clerk/nextjs/server"
+import { TRPCError, initTRPC } from "@trpc/server"
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next"
+import superjson from "superjson"
+import { ZodError } from "zod"
+import { prisma } from "~/server/db"
 
 /**
  * 1. CONTEXT
@@ -30,8 +27,8 @@ import { prisma } from "~/server/db";
  */
 
 type CreateContextOptions = {
-  auth: SignedInAuthObject | SignedOutAuthObject;
-};
+  auth: SignedInAuthObject | SignedOutAuthObject
+}
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -47,8 +44,8 @@ const createInnerTRPCContext = ({ auth }: CreateContextOptions) => {
   return {
     auth,
     prisma,
-  };
-};
+  }
+}
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -57,8 +54,8 @@ const createInnerTRPCContext = ({ auth }: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({ auth: getAuth(opts.req) });
-};
+  return createInnerTRPCContext({ auth: getAuth(opts.req) })
+}
 
 /**
  * 2. INITIALIZATION
@@ -77,9 +74,9 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
-    };
+    }
   },
-});
+})
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
@@ -93,7 +90,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  *
  * @see https://trpc.io/docs/router
  */
-export const createTRPCRouter = t.router;
+export const createTRPCRouter = t.router
 
 /**
  * Public (unauthenticated) procedure
@@ -102,21 +99,21 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure
 
 /**
  * This middleware throws a tRPC "UNAUTHORIZED" error if the context auth object has no userId.
  */
 const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.auth.userId) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: "UNAUTHORIZED" })
   }
   return next({
     ctx: {
       auth: ctx.auth,
     },
-  });
-});
+  })
+})
 
 /**
  * This is a middleware-enhanced procedure that requires authentication for the request to proceed.
@@ -124,4 +121,4 @@ const isAuthed = t.middleware(({ next, ctx }) => {
  *
  * Use this to build mutations or queries that require a logged in user.
  */
-export const privateProcedure = t.procedure.use(isAuthed);
+export const privateProcedure = t.procedure.use(isAuthed)
