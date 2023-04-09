@@ -1,5 +1,12 @@
 {
   "editor.tabSize": 2,
   // Stick to tabSize 2:
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  // Make sure we consistently use the workspace-installed version of TypeScript:
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
