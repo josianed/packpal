@@ -3,10 +3,33 @@
 @tailwind utilities;
 
 /* Is this the "correct" way to do full-height layouts in Next.js? */
-html,
+/* html,
 body,
 body > div:first-child,
 div#__next,
 div#__next > div {
   height: 100%;
+} */
+
+/* ===== Scrollbar CSS ===== */
+
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #dc815f #a2bba8;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #a2bba8;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #dc815f;
+  border-radius: 30px;
+  border: 4px solid #a2bba8;
 }
