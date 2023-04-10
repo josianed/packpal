@@ -18,7 +18,7 @@ const Skeleton = () => {
           Lorem, ipsum.
         </h1>
         <div className="grow p-4">
-          <p className="text-gray-900">
+          <p className="mb-4 text-gray-900">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet
             suscipit, voluptates, ut reprehenderit deserunt doloribus hic dolor
             possimus non repellendus consectetur fuga? Reiciendis quod
