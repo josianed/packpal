@@ -13,6 +13,10 @@ const Home: NextPage = () => {
   // TODO: How do you invalidate a query like this once you've signed in?
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
+  const strLenPrivate = api.example.stringLengthPrivate.useQuery("thisString", {
+    retry: false,
+  });
+
   const { user, isLoaded, isSignedIn } = useUser();
 
   return (
@@ -37,6 +41,10 @@ const Home: NextPage = () => {
           <p>isLoaded: {String(isLoaded)}</p>
           <p>isSignedIn: {String(isSignedIn)}</p>
           <p>{hello.data?.greeting}</p>
+          <p>
+            strLenPrivate: {strLenPrivate.data}, strLenPrivate.error:{" "}
+            {strLenPrivate.error?.message}
+          </p>
           {user !== null && user !== undefined ? (
             <SignOutButton>
               <button

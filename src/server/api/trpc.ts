@@ -56,7 +56,7 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import {
@@ -101,3 +101,25 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+/**
+ * This middleware throws a tRPC "UNAUTHORIZED" error if the context auth object has no userId.
+ */
+const isAuthed = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      auth: ctx.auth,
+    },
+  });
+});
+
+/**
+ * This is a middleware-enhanced procedure that requires authentication for the request to proceed.
+ * If the context auth object has no userId, a tRPC "UNAUTHORIZED" error will be thrown.
+ *
+ * Use this to build mutations or queries that require a logged in user.
+ */
+export const privateProcedure = t.procedure.use(isAuthed);
