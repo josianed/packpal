@@ -1,23 +1,21 @@
-import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs"
+import { type NextPage } from "next"
+import { Inter } from "next/font/google"
+import Head from "next/head"
+import Link from "next/link"
+import { api } from "~/utils/api"
 
-import { api } from "~/utils/api";
-
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 const Home: NextPage = () => {
   // TODO: How do you invalidate a query like this once you've signed in?
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.example.hello.useQuery({ text: "from tRPC" })
 
   const strLenPrivate = api.example.stringLengthPrivate.useQuery("thisString", {
     retry: false,
-  });
+  })
 
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser()
 
   return (
     <>
@@ -67,7 +65,7 @@ const Home: NextPage = () => {
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

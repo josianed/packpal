@@ -1,10 +1,9 @@
-import { z } from "zod";
-
+import { z } from "zod"
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
+} from "~/server/api/trpc"
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
@@ -14,14 +13,14 @@ export const exampleRouter = createTRPCRouter({
         greeting: `Hello ${input.text}, you appear to be ${
           ctx.auth.userId === null ? "signed out" : ctx.auth.userId
         }.`,
-      };
+      }
     }),
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.example.findMany();
+    return ctx.prisma.example.findMany()
   }),
   stringLengthPrivate: privateProcedure
     .input(z.string())
     .query(({ input, ctx }) => {
-      return input.length;
+      return input.length
     }),
-});
+})
